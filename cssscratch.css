@@ -1,0 +1,100 @@
+/* General body styling */
+body {
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+    color: hotpink;
+    background-color: rgb(218, 255, 243);
+    scrollbar-width: thin;
+    scrollbar-color: #9bcbff #f3ccd9;
+}
+
+/* Headings */
+h1, h5 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(21, 146, 255);
+}
+
+/* Links */
+a {
+    color: bisque;
+    text-decoration: none;
+}
+a:visited {
+    color: rgb(38, 233, 233);
+}
+a:hover {
+    text-decoration: overline;
+    background-color: #333;
+    color: white;
+}
+
+/* Images */
+img {
+    border: 3px solid rgb(238, 128, 10);
+    padding: 5px;
+}
+
+/* Rizz class */
+.rizz {
+    display: block;
+    border: 2px solid lime;
+    font-weight: bold;
+    padding: 5px;
+    font-family: cursive, sans-serif;
+    transition: all 0.3s ease;
+}
+.rizz:hover {
+    font-size: 300%;
+    border: 3px solid lime;
+}
+
+/* Tableau placeholder */
+.tableauPlaceholder {
+    position: relative;
+    padding-bottom: 56.25%; /* Maintain aspect ratio */
+    height: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.tableauPlaceholder object {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Navigation bar */
+.nav {
+    text-align: right;
+    padding: 10px 20px;
+}
+
+/* Lists */
+ul > li {
+    list-style-type: disc;
+    padding: 5px;
+}
+ul > li:hover {
+    text-decoration: underline;
+    background-color: rgb(234, 50, 133);
+    color: white;
+}
+
+/* Content section */
+.content {
+    margin-top: 150px;
+    margin-bottom: 50px;
+    padding-left: 20px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    font-style: italic;
+    background-color: darkcyan;
+    font-size: 50%;
+    padding: 10px;
+}

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Snake Game!</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Core theme CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        header {
+            padding: 20px 0;
+            text-align: center;
+
+            color: #fff;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .snake-game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: calc(100vh - 200px); /* Adjust based on header and nav heights */
+        }
+
+        canvas {
+            background-color: #111;
+            display: block;
+            border: 2px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="site-heading text-center text-faded d-none d-lg-block">
+            <span class="site-heading-upper text-primary mb-3">Can you get the high score?</span>
+            <span class="site-heading-lower">The Snake Game!</span>
+        </h1>
+    </header>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">About Me</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Home</a></li>
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="resume.html">Resume</a></li>
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="otherinterests.html">Other Interests</a></li>
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="../startbootstrap-business-casual-gh-pages/scratch.html">Scratch</a></li>
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="casestudies.html">Case Study Simulator</a></li>
+                    <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="snakegame.html">Snake Game</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+   <!-- Snake Game -->
+
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            background-color: #111;
+            display: block;
+        }
+
+        #scoreDisplay {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        #levelDisplay {
+            margin-top: 5px;
+            font-size: 18px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="snake-game-container">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div id="scoreDisplay">Score: 0</div>
+        <div id="levelDisplay">Level: 1</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+    
+        const tileSize = 20;
+        const rows = canvas.height / tileSize;
+        const cols = canvas.width / tileSize;
+    
+        let snake = [{ x: 5, y: 5 }];
+        let direction = { x: 0, y: 0 };
+        let food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+        let obstacles = [];
+        let powerUp = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows), active: true };
+        let score = 0;
+        let level = 1;
+        let speed = 300; // Initial speed in milliseconds
+        let lastRenderTime = 0;
+        let lasersActive = false;
+
+        function drawTile(x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+        }
+
+        function drawSnake() {
+            snake.forEach(segment => drawTile(segment.x, segment.y, 'lime'));
+        }
+
+        function drawFood() {
+            drawTile(food.x, food.y, 'red');
+        }
+
+        function drawObstacles() {
+            obstacles.forEach(obstacle => drawTile(obstacle.x, obstacle.y, 'gray'));
+        }
+
+        function drawPowerUp() {
+            if (powerUp.active) {
+                drawTile(powerUp.x, powerUp.y, 'blue');
+            }
+        }
+
+        function moveSnake() {
+            const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
+                food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+                levelUp();
+            } else {
+                snake.pop();
+            }
+
+            if (checkObstacleCollision(head)) {
+                resetGame();
+            }
+
+            checkPowerUpCollision(head);
+
+            if (
+                head.x < 0 || head.y < 0 ||
+                head.x >= cols || head.y >= rows ||
+                snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)
+            ) {
+                resetGame();
+            }
+        }
+
+        function levelUp() {
+            level++;
+            document.getElementById('levelDisplay').innerText = `Level: ${level}`;
+            speed = Math.max(100, speed - 20);
+            addObstacles(3 * level); // Add obstacles based on the level
+        }
+
+        function addObstacles(count) {
+            for (let i = 0; i < count; i++) {
+                obstacles.push({
+                    x: Math.floor(Math.random() * cols),
+                    y: Math.floor(Math.random() * rows)
+                });
+            }
+        }
+
+        function checkObstacleCollision(head) {
+            return obstacles.some(obstacle => obstacle.x === head.x && obstacle.y === head.y);
+        }
+
+        function checkPowerUpCollision(head) {
+            if (powerUp.active && head.x === powerUp.x && head.y === powerUp.y) {
+                activateLasers();
+                powerUp.active = false;
+                setTimeout(() => {
+                    powerUp = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows), active: true };
+                }, 10000);
+            }
+        }
+
+        function activateLasers() {
+            lasersActive = true;
+            setTimeout(() => {
+                lasersActive = false;
+            }, 5000);
+        }
+
+        function drawLasers() {
+            if (lasersActive) {
+                const head = snake[0];
+                for (let x = 0; x < cols; x++) {
+                    drawTile(x, head.y, 'yellow');
+                }
+                for (let y = 0; y < rows; y++) {
+                    drawTile(head.x, y, 'yellow');
+                }
+                obstacles = obstacles.filter(
+                    obstacle => obstacle.x !== head.x && obstacle.y !== head.y
+                );
+            }
+        }
+
+        function resetGame() {
+            alert(`Game Over! Your score was ${score}`);
+            snake = [{ x: 5, y: 5 }];
+            direction = { x: 0, y: 0 };
+            food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+            obstacles = [];
+            powerUp = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows), active: true };
+            score = 0;
+            level = 1;
+            speed = 300;
+            document.getElementById('scoreDisplay').innerText = `Score: 0`;
+            document.getElementById('levelDisplay').innerText = `Level: 1`;
+        }
+
+        function update(currentTime) {
+            if (currentTime - lastRenderTime < speed) {
+                requestAnimationFrame(update);
+                return;
+            }
+            lastRenderTime = currentTime;
+
+            moveSnake();
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSnake();
+            drawFood();
+            drawObstacles();
+            drawPowerUp();
+            drawLasers();
+
+            requestAnimationFrame(update);
+        }
+
+        function changeDirection(event) {
+            const { key } = event;
+            if (key === 'w' && direction.y === 0) direction = { x: 0, y: -1 };
+            if (key === 's' && direction.y === 0) direction = { x: 0, y: 1 };
+            if (key === 'a' && direction.x === 0) direction = { x: -1, y: 0 };
+            if (key === 'd' && direction.x === 0) direction = { x: 1, y: 0 };
+        }
+
+        document.addEventListener('keydown', changeDirection);
+
+        requestAnimationFrame(update);
+    </script>
+
+    
+</body>
+</html>
